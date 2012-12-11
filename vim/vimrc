@@ -1,0 +1,207 @@
+set nocompatible
+
+set hidden
+
+let mapleader = ','
+
+set guifont=Dejavu\ Sans\ Mono\ 12,Consolas:h12
+
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+
+set backspace=indent,eol,start
+
+set wildmenu
+set wildmode=longest,list,full
+set wildignore+=*.class,*.jar,*.so,**/target
+
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set gdefault
+
+set noswapfile
+
+
+nnoremap <leader><space> :noh<cr>
+
+nmap <leader>ev :e ~/Projects/linux-config/vim/vimrc<cr>
+"move out to vim filetype?
+nmap <leader>ss :w<cr>:so %<cr>
+
+nmap <c-s> :w<cr>
+imap <c-s> <esc>:w<cr>a
+
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+
+nnoremap j gj
+nnoremap k gk
+inoremap jj <esc>
+
+nnoremap ; :
+nnoremap <space> ;
+
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+nnoremap <leader><leader>o :TagbarToggle<cr>
+nnoremap <leader><leader>t :NERDTreeToggle<cr>
+nnoremap <leader><leader>s :NERDTreeFind<cr>
+nnoremap <leader><leader>f :CtrlP<cr>
+nnoremap <leader><leader>b :CtrlPBuffer<cr>
+nnoremap <leader><leader>r :CtrlPMRUFiles<cr>
+
+set laststatus=2
+"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.B]\ [%p%%]\ [LEN=%L]\ %04l\ x\ %04v
+set statusline=[fmt=%{&ff},tp=%Y,char=\%03.3b\=0x\%02.B]%4l:%-3v\ [%p%%\ of\ %L]%=%F%m%r%h%w\ 
+
+map <silent> <c-f2> :if &guioptions =~# 'T' <bar> 
+                \set guioptions-=T <bar> 
+                \set guioptions-=m <bar> 
+            \else <bar> 
+                \set guioptions+=T <bar> 
+                \set guioptions+=m <bar> 
+            \endif<cr>
+
+call pathogen#infect()
+
+filetype on
+filetype plugin on
+filetype indent on
+
+syntax on
+" colorscheme desert
+"colorscheme mustang
+colorscheme solarized
+"set background=dark
+call togglebg#map("<F5>")
+
+
+set number
+highlight LineNr guifg=Black gui=bold term=bold ctermfg=5
+
+set list
+"set listchars=tab:»\ ,eol:¬
+set listchars=tab:»\ ,trail:\ 
+"highlight SpecialKey guifg=grey0 guibg=#202020 gui=bold
+"highlight NonText    guifg=grey0 guibg=#202020 gui=bold
+
+
+"TODO
+"set showbreak=…
+
+"set cursorline
+"highlight CursorLine cterm=bold ctermbg=NONE guibg=Grey8
+"set nocursorcolumn
+"highlight CursorColumn guibg=Grey10 ctermbg=NONE
+
+
+" ctrlp settings
+let g:ctrlp_dotfiles = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_cache_dir = '/tmp/pavel/'
+
+" ZoomWin settings
+"nmap <c-m> <c-w>o
+"nmap <leader>z <c-w>o
+
+" NERDCommenter
+nmap \\ <leader>cm
+vmap \\ <leader>cm
+nmap <c-\> <leader>c<space>
+vmap <c-\> <leader>c<space>
+
+ "space.vim settings
+" let g:space_no_character_movements = 1
+
+" superTab settings
+"let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabDefaultCompletionType = "<c-p>"
+
+ "let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+set completeopt=menu,longest
+
+
+" set omnifunc=syntaxcomplete#Complete
+
+"cd ~/Code
+
+let g:EasyMotion_leader_key='<leader>'
+
+function! SetQuickFix4Testacular()
+  setlocal errorfile=ah-client-web/target/streams/$global/test/$global/out
+  let &efm = ''
+
+  let &efm .= ',%-G%.%#(unknown\ source)%.%#'
+  let &efm .= ',%Z%.%#at\ %.%#\ (%f:%l:%c)%.%#'
+  let &efm .= ',%Z%.%#at\ %.%#\ (%f:%l)%.%#'
+  let &efm .= ',%Z%.%#at\ %f:%l:%c%.%#'
+  let &efm .= ',%Z%.%#at\ %f:%l:%.%#'
+  let &efm .= ',%E%.%#Error:\ %m'
+  let &efm .= ',%C%.%#Expected%.%#'
+  let &efm .= ',%-G%.%#.scala:%.%#'
+  let &efm .= ',%-G%.%#.java:%.%#'
+  let &efm .= ',%-G%.%#.sbt:%.%#'
+  let &efm .= ',%.%#at\ %.%#\ (%f:%l:%c)%m'
+  let &efm .= ',%.%#at\ %.%#\ (%f:%l)%m'
+  let &efm .= ',%.%#at\ %f:%l:%c%m'
+  let &efm .= ',%.%#at\ %f:%l%m'
+  let &efm .= ',%-G%.%#Executed\ \d+\ of\ \d+%.%#'
+  let &efm .= ',%-G%.%#\ spec\ errors%.%#'
+  let &efm .= ',%-G%.%#\ FAILED%.%#'
+
+endfunction
+
+"call SetQuickFix4Testacular()
+
+function! SetQuickFix4Scala()
+  setlocal errorfile=ah-server/target/streams/test/compile/$global/out
+  setlocal errorfile=**/target/**out
+  setlocal errorfile=/tmp/sbt_errorfile
+  let &efm = ''
+
+  "let &efm .= ',%-G%.%#Removed products%.%#'
+  "let &efm .= ',%-G%.%#[0mdebug%.%#'
+  "let &efm .= ',%-G%.%#[0minfo%.%#'
+  "let &efm .= ',%Z%.%#[0m%p^%.%#'
+  "let &efm .= ',%E%.%#[0m%f:%l:%m'
+  "let &efm .= ',%C%.%#'
+  "let &efm .= ',%-G%.%#Compilation failed%.%#'
+  "let &efm .= ',%-G%.%#error found%.%#'
+  "let &efm .= ',%-G%.%#errors found%.%#'
+
+  let &efm .= ',%Z%p^%.%#'
+  let &efm .= ',%E%f:%l:%m'
+  let &efm .= ',%C%.%#'
+  let &efm .= ',%-G%.%#Compilation failed%.%#'
+  let &efm .= ',%-G%.%#error found%.%#'
+  let &efm .= ',%-G%.%#errors found%.%#'
+
+  let &efm .= ',%E%.%#Expected%m(%f:%l)%.%#'
+
+  let &efm .= ',%-G%s(\[a-zA-Z0-9_.\-\]\*a:\.\*'
+  let &efm .= ',%-G%.%#\ at\ %.%#(%s\[a-zA-Z0-9-_%.\]%#)'
+  let &efm .= ',%.%#\ at\ %.%#(%f:%l)%m'
+
+endfunction
+
+call SetQuickFix4Scala()
+
+nmap <F4> :cnext<cr>
+nmap <S-F4> :cprev<cr>
+nmap <F3> :cgetfile<cr>:copen<cr>
+nmap  <S-F3> :cclose<cr>
+
