@@ -28,7 +28,8 @@ set noswapfile
 
 nnoremap <leader><space> :noh<cr>
 
-nmap <leader>ev :e ~/Projects/linux-config/vim/vimrc<cr>
+"nmap <leader>ev :e ~/Projects/linux-config/vim/vimrc<cr>
+nmap <leader>ev :Vedit vimrc<cr>
 "move out to vim filetype?
 nmap <leader>ss :w<cr>:so %<cr>
 
