@@ -199,7 +199,18 @@ function! SetQuickFix4Scala()
 
 endfunction
 
-call SetQuickFix4Scala()
+nnoremap <leader>ee :call eclim#eclipse#SyncEditor()<cr>
+
+augroup scala_ft
+  autocmd!
+  autocmd FileType scala call SetQuickFix4Scala()
+  autocmd FileType scala nnoremap <buffer> gd :ScalaSearch<cr>
+augroup END
+
+augroup java_ft
+  autocmd!
+  autocmd FileType java nnoremap <buffer> gd :JavaSearch<cr>
+augroup END
 
 nmap <F4> :cnext<cr>
 nmap <S-F4> :cprev<cr>
