@@ -130,7 +130,7 @@ vmap <c-\> <leader>c<space>
 
 " superTab settings
 "let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabDefaultCompletionType = "<c-p>"
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
  "let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 set completeopt=menu,longest
@@ -219,49 +219,68 @@ nmap  <S-F3> :cclose<cr>
 
 
 function! IndentLevel(lnum)
-    return indent(a:lnum) / &shiftwidth
+  return indent(a:lnum) / &shiftwidth
 endfunction
 
 
 function! NextNonBlankLine(lnum)
-    let numlines = line('$')
-    let current = a:lnum + 1
+  let numlines = line('$')
+  let current = a:lnum + 1
 
-    while current <= numlines
-        if getline(current) =~? '\v\S'
-            return current
-        endif
+  while current <= numlines
+    if getline(current) =~? '\v\S'
+      return current
+    endif
 
-        let current += 1
-    endwhile
+    let current += 1
+  endwhile
 
-    return -2
+  return -2
 endfunction
 
 
 function! GetFold(lnum)
-    if getline(a:lnum) =~? '\v^\s*$'
-        return '-1'
-    elseif getline(a:lnum) =~? '\v^\s*}\s*$'
-        return 1+IndentLevel(a:lnum)
-    elseif getline(a:lnum) =~? '\v^import\s'
-      return 2
-    endif
+  if getline(a:lnum) =~? '\v^\s*$'
+    return '-1'
+  elseif getline(a:lnum) =~? '\v^\s*endfunction\s*$'
+    return 1+IndentLevel(a:lnum)
+  elseif getline(a:lnum) =~? '\v^\s*endif\s*$'
+    return 1+IndentLevel(a:lnum)
+  elseif getline(a:lnum) =~? '\v^\s*endwhile*$'
+    return 1+IndentLevel(a:lnum)
+  elseif getline(a:lnum) =~? '\v^\s*augroup\s.*$'
+    return 1+IndentLevel(a:lnum)
+  elseif getline(a:lnum) =~? '\v^\s*}\s*$'
+    return 1+IndentLevel(a:lnum)
+  elseif getline(a:lnum) =~? '\v^\s*\<\/.*\>\s*$'
+    return 1+IndentLevel(a:lnum)
+  elseif getline(a:lnum) =~? '\v^import\s'
+    return 2
+  endif
 
-    let this_indent = IndentLevel(a:lnum)
-    let next_indent = IndentLevel(NextNonBlankLine(a:lnum))
+  let this_indent = IndentLevel(a:lnum)
+  let next_indent = IndentLevel(NextNonBlankLine(a:lnum))
 
-    if next_indent == this_indent
-        return this_indent
-    elseif next_indent < this_indent
-        return this_indent
-    elseif next_indent > this_indent
-        return '>' . next_indent
-    endif
+  if next_indent == this_indent
+    return this_indent
+  elseif next_indent < this_indent
+    return this_indent
+  elseif next_indent > this_indent
+    return '>' . next_indent
+  endif
 endfunction
 
 
 set foldmethod=expr
 set foldexpr=GetFold(v:lnum)
+set foldlevel=10
+set nofoldenable
 
+let g:neocomplcache_enable_at_startup = 1
+let g:neosnippet#snippets_directory = expand("$HOME/.vim/snippets")
 
+imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ?  "\<Plug>(neosnippet_jump)" : "\<TAB>"
+
+imap <expr><CR> 0==pumvisible() ? "\<CR>" : neosnippet#expandable() ?  "\<Plug>(neosnippet_expand)" : "\<C-Y>"
+
+imap <expr><C-n> neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<C-n>"
