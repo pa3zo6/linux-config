@@ -217,6 +217,8 @@ nmap <S-F4> :cprev<cr>
 nmap <F3> :cgetfile<cr>:copen<cr>
 nmap  <S-F3> :cclose<cr>
 
+let g:EclimHtmlValidate = 0
+let g:EclimScalaValidate = 0
 
 function! IndentLevel(lnum)
   return indent(a:lnum) / &shiftwidth
