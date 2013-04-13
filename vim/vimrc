@@ -31,9 +31,11 @@ nnoremap <leader><space> :noh<cr>
 "nmap <leader>ev :e ~/Projects/linux-config/vim/vimrc<cr>
 nmap <leader>ev :Vedit vimrc<cr>
 "move out to vim filetype?
-nmap <leader>ss :w<cr>:so %<cr>
+nmap <leader>so :w<cr>:so %<cr>
 
 nmap <c-s> :w<cr>
+nmap <leader>w :w<cr>
+
 imap <c-s> <esc>:w<cr>a
 
 map <up> <nop>
@@ -58,12 +60,12 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-nnoremap <leader><leader>o :TagbarToggle<cr>
-nnoremap <leader><leader>t :NERDTreeToggle<cr>
-nnoremap <leader><leader>s :NERDTreeFind<cr>
-nnoremap <leader><leader>f :CtrlP<cr>
-nnoremap <leader><leader>b :CtrlPBuffer<cr>
-nnoremap <leader><leader>r :CtrlPMRUFiles<cr>
+nnoremap <leader>o :TagbarToggle<cr>
+nnoremap <leader>t :NERDTreeToggle<cr>
+nnoremap <leader>s :NERDTreeFind<cr>
+nnoremap <leader>f :CtrlP<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>r :CtrlPMRUFiles<cr>
 
 set laststatus=2
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.B]\ [%p%%]\ [LEN=%L]\ %04l\ x\ %04v
@@ -140,7 +142,7 @@ set completeopt=menu,longest
 
 "cd ~/Code
 
-let g:EasyMotion_leader_key='<leader>'
+let g:EasyMotion_leader_key='z'
 
 function! SetQuickFix4Testacular()
   setlocal errorfile=ah-client-web/target/streams/$global/test/$global/out
